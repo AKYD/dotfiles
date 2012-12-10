@@ -1,0 +1,35 @@
+caption always '%{= kg} %=[%{R} F7 - PREV SCREEN %{G}][%{R} F8 - NEXT SCREEN %{G}][%{R} F9 - NEW SCREEN %{g}][%{R} F10 - SET TITLE %{g}][%{R} F11 - SET PASSWORD%{g} ]%='
+hardstatus alwayslastline '%{= kG}[ %{W}Hostname: %{R}%H %{G}][%= %{= kw}%?%-Lw%?%{r}%{W}%n%{R}*%f%t%?(%u)%?%{r}%{w}%?%+Lw%?%?%= %{G}][ %{W}Time: %c:%s %d-%m-%Y %{g}][ %{W}Load: %{kR}%l %{g}]'
+
+term screen-256color
+terminfo rxvt-unicode 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
+bindkey -k k7 prev
+bindkey -k k8 next
+bindkey -k k9 screen
+bindkey -k k; title
+bindkey -k F1 password
+
+
+termcapinfo xterm* ti@:te@
+startup_message off
+multiuser on
+autodetach on
+defscrollback 1024
+defmonitor on
+activity "%c activity -> %n%f %t^G"
+#screen -t htop htop
+#split
+#focus down
+#screen -t bash bash
+
+
+#bind = resize =
+#bind + resize +1
+#bind - resize -1
+#bind _ resize max
+
+bind m screen -t 'Mutt'    7 mutt
+bind e screen -t 'Elinks'  8 elinks www.google.co.in
+bind i screen -t 'Irssi'   9 irssi
+
