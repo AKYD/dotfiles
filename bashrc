@@ -68,14 +68,6 @@ EDITOR=/usr/bin/vim
 bind Space:magic-space
 
 
-# tail with color
-# t access.log INFO
-
-t() { 
-	tail -f -n5000 $1 | perl -pe "s/$2/\e[1;31;43m$&\e[0m/g"
-}
-
-
 # Less Colors for Man Pages
 export LESS_TERMCAP_mb=$'\E[01;31m'       # begin blinking
 export LESS_TERMCAP_md=$'\E[01;38;5;74m'  # begin bold
@@ -127,6 +119,7 @@ else
 fi
 
 export PS1
+export PS4
 
 # tail -f with color
 # example : t access.log ERROR WARNING
