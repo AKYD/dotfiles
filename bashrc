@@ -5,6 +5,8 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+export PATH=$PATH:~/bin
+
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
 
@@ -55,13 +57,10 @@ calc() { bc <<< $*; }
 export LESS='FiX'
 
 alias l='ls -lisAh'
-alias n="nano"
-
-alias ssh_hostmonster='ssh alinadhc@alinadh.com -p 22'
 
 alias grep='grep --color=auto'
 alias gpia='curl ifconfig.me'
-alias nano='echo "Foloseste vim-ul bre!!!"'
+alias r='fc -s'
 
 EDITOR=/usr/bin/vim
 # expand all ! words
