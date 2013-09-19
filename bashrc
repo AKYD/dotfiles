@@ -31,27 +31,7 @@ fi
 if [ "$TERM" != "dumb" ]; then
     eval "`dircolors -b`"
     alias ls='ls --color=auto'
-    #alias la='ls -Al--color=auto'
-    #alias vdir='ls --color=auto --format=long'
 fi
-
-genpasswd() {
-	local l=$1
-       	[ "$l" == "" ] && l=20
-      	tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
-}
-
-# determine which package contains the command
-whichpkg () { dpkg -S $1 | egrep -w $(readlink -f "$(which $1)")$; }
-
-# get info about a package
-summpkg () { dpkg -s $(dpkg -S $1 | egrep -w $(which $1)$ | awk -F: '{print $1}') ; }
-
-# stop adobe from tracking stuff
-adobenospy() { for I in ~/.adobe ~/.macromedia ; do ( [ -d $I ] && rm -rf $I ;  ln -s -f /dev/null $I ) ; done }
-
-# calculator
-calc() { bc <<< $*; }
 
 # make less keep the text on screen after exit
 export LESS='FiX'
@@ -116,15 +96,34 @@ else
 	PS1="$PS1""\[\e[1;32m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]\[\e[1;32m\]$\[\e[0m\] "
 fi
 
-PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+PS4="${LRED}+${LGRAY}(${LGREEN}${BASH_SOURCE}:${YELLOW}${LINENO}${LGRAY}): ${LGRAY}${FUNCNAME[0]:+${FUNCNAME[0]}(): }"
 
 export PS1
 export PS4
 
+########## Functions ########## 
+
+genpasswd() {
+	local l=$1
+       	[ "$l" == "" ] && l=20
+      	tr -dc A-Za-z0-9_ < /dev/urandom | head -c ${l} | xargs
+}
+
+# determine which package contains the command
+whichpkg () { dpkg -S $1 | egrep -w $(readlink -f "$(which $1)")$; }
+
+# get info about a package
+summpkg () { dpkg -s $(dpkg -S $1 | egrep -w $(which $1)$ | awk -F: '{print $1}') ; }
+
+# stop adobe from tracking stuff
+adobenospy() { for I in ~/.adobe ~/.macromedia ; do ( [ -d $I ] && rm -rf $I ;  ln -s -f /dev/null $I ) ; done }
+
+# calculator
+calc() { bc <<< $*; }
+
 # tail -f with color
 # example : t access.log ERROR WARNING
-
-t()
+function t()
 {
 	file=$1
 	unset string
