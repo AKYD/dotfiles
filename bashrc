@@ -137,3 +137,13 @@ function t()
 	done
 	tail -f $file | perl -pe "$string"
 }
+
+
+function img
+{
+        for image in "$@"
+        do
+                convert -thumbnail $(tput cols) "$image" txt:- | awk -F '[)(,]' '!/^#/{gsub(/ /,""); printf"\033[48;2;"$3";"$4";"$5"m "}'
+                echo -e "\e[0;0m"
+        done
+}
