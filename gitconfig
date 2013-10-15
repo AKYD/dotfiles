@@ -62,3 +62,6 @@
 
 [push]
         default = matching
+[user]
+	email = alin.hrapciuc@gmail.com
+	name = AKYD
