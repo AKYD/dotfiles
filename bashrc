@@ -9,6 +9,8 @@ export PATH=$PATH:~/bin:~/bin/autojump/usr/local/bin
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
+# timestamp the commands in history
+export HISTTIMEFORMAT="%F %T "
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -22,28 +24,22 @@ if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 # enable color support of ls and also add handy aliases
 if [ "$TERM" != "dumb" ]; then
     eval "`dircolors -b`"
     alias ls='ls --color=auto'
 fi
 
-
 # make less keep the text on screen after exit
 export LESS='FiXR'
 
 alias l='ls -lisAh'
-
 alias grep='grep --color=auto'
 alias gpia='curl ifconfig.me'
 alias r='fc -s'
 
 export EDITOR=/usr/bin/vim
+
 # expand all ! words
 bind Space:magic-space
 
@@ -59,6 +55,7 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m' # begin underline
 
 # colorize man pages
 #export MANPAGER="/usr/bin/most -s"
+# use vim for man pages
 export MANPAGER="/bin/sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu noma' -\""
 
 # enable programmable completion features (you don't need to enable
@@ -87,23 +84,49 @@ LCYAN="\[\033[1;36m\]"
 WHITE="\[\033[1;37m\]"
 NORM="\[\e[m\]"
 
-export HISTTIMEFORMAT="%F %T "
-
-PS1="\`res=\$?; if [ \$res -eq 0 ]; then echo \[\e[32m\]^_^ \| \[\e[0m\]; else echo \[\e[31m\]O_o : \[\e[0m\]\[\e[35m\]\$res\[\e[0m\] \[\e[32m\]\| \[\e[0m\]; fi\`"
-
-if [ `id -u` -eq 0 ]
-then
-	PS1="$PS1""\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]\[\e[1;31m\]#\[\e[0m\] "
-else
-	PS1="$PS1""\[\e[1;32m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]\[\e[1;32m\]$\[\e[0m\] "
-fi
-
 parse_git_dirty () {
             [[ $(git status 2> /dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
 }
+
 parse_git_branch () {
-            git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+        local branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/" )
+        local dirty=$(parse_git_dirty)
+        if [ -z "$branch" ]
+        then
+                echo ""
+        else
+                if [ "$branch" == "master" ]
+                then
+                        branch="\e[1;31m$branch\e[m"
+                else
+                        branch="\e[1;33m$branch\e[m"
+                fi
+
+                if [ ! -z "$dirty" ]
+                then
+                        echo -e " ( ${branch} : \e[33m*\e[m ) "  
+                else
+                        echo -e " ( $branch ) "  
+                fi
+        fi
 }
+
+
+# show last command exit status
+PS1="\`res=\$?; if [ \$res -eq 0 ]; then echo \[\e[32m\]^_^ \| \[\e[0m\]; else echo \[\e[31m\]O_o : \[\e[0m\]\[\e[35m\]\$res\[\e[0m\] \[\e[32m\]\| \[\e[0m\]; fi\`"
+
+PS1="$PS1""\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]"
+
+
+PS1="$PS1\`parse_git_branch\`"
+
+# colorize prompt if logged in as root
+if [ $UID -eq 0 ]
+then
+        PS1="$PS1\[\e[1;31m\]#\[\e[0m\] "
+else
+        PS1="$PS1\[\e[1;32m\]$\[\e[0m\] "
+fi
 
 PS4="${LRED}+${LGRAY}(${LGREEN}${BASH_SOURCE}:${YELLOW}${LINENO}${LGRAY}): ${LGRAY}${FUNCNAME[0]:+${FUNCNAME[0]}(): }"
 

@@ -1,5 +1,6 @@
 [diff]
 	tool = vimdiff
+	external = git_vimdiff_wrapper
 [difftool]
 	prompt = false
 
@@ -65,3 +66,4 @@
 [user]
 	email = alin.hrapciuc@gmail.com
 	name = AKYD
+        editor = vim
