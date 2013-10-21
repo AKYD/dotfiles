@@ -115,7 +115,12 @@ parse_git_branch () {
 # show last command exit status
 PS1="\`res=\$?; if [ \$res -eq 0 ]; then echo \[\e[32m\]^_^ \| \[\e[0m\]; else echo \[\e[31m\]O_o : \[\e[0m\]\[\e[35m\]\$res\[\e[0m\] \[\e[32m\]\| \[\e[0m\]; fi\`"
 
-PS1="$PS1""\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]"
+if [ $UID -eq 0 ]
+then
+        PS1="$PS1""\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]"
+else
+        PS1="$PS1""\[\e[1;32m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]"
+fi
 
 
 PS1="$PS1\`parse_git_branch\`"
