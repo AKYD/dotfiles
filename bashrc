@@ -35,8 +35,10 @@ export LESS='FiXR'
 
 alias l='ls -lisAh'
 alias grep='grep --color=auto'
-alias gpia='curl ifconfig.me'
 alias r='fc -s'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias g='history | grep'
 
 export EDITOR=/usr/bin/vim
 
