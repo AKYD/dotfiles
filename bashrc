@@ -34,7 +34,7 @@ fi
 export LESS='FiXR'
 
 alias l='ls -lisAh'
-alias grep='grep --color=auto'
+alias grep='grep --color=auto -i'
 alias r='fc -s'
 alias ..='cd ..'
 alias ...='cd ../..'
