@@ -5,6 +5,8 @@
 	prompt = false
 
 [alias]
+        d = difftool
+        tree = log --oneline --decorate --all --graph
         # View abbreviated SHA, description, and history graph of the latest 20 commits
         # l = log --pretty=oneline -n 20 --graph --abbrev-commit
         l = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
@@ -65,6 +67,12 @@
 [push]
         default = matching
 [user]
-	email = alin.hrapciuc@gmail.com
-	name = AKYD
+	email = CHANGE_ME
+	name = CHANGE_ME
         editor = vim
+[http]
+	sslVerify = false
+	proxy = https://127.0.0.1:3128
+[https]
+	sslVerify = false
+	proxy = https://127.0.0.1:3128
