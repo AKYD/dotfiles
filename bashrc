@@ -187,10 +187,10 @@ function workspace ()
 }
 
 # load proxy settings
-. proxyrc
+. ~/dotfiles/proxyrc
 
 # load local settings
-. localrc
+. ~/dotfiles/localrc
                                                           
 export PATH=~/.ssh:$PATH  
 
@@ -201,7 +201,6 @@ function ssh_with_rc()
                 RC_DATA=$(cat ~/.sshrc | base64 -w 0)
                 \ssh -t $@ "echo \"${RC_DATA}\" | base64 -di > /tmp/${USER}_bashrc; bash --rcfile /tmp/${USER}_bashrc; rm /tmp/${USER}_bashrc"
         else
-                echo norc >> /tmp/ssh_debug
                 \ssh $@
         fi
 }
