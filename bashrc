@@ -36,6 +36,7 @@ fi
 export LESS='FiXR'
 
 alias l='ls -liAh'
+alias ll='ls -liAh'
 alias grep='grep --color=auto -i'
 alias r='fc -s'
 alias ..='cd ..'
@@ -157,12 +158,6 @@ whichpkg () { dpkg -S $1 | egrep -w $(readlink -f "$(which $1)")$; }
 # get info about a package
 summpkg () { dpkg -s $(dpkg -S $1 | egrep -w $(which $1)$ | awk -F: '{print $1}') ; }
 
-# stop adobe from tracking stuff
-adobenospy() { for I in ~/.adobe ~/.macromedia ; do ( [ -d $I ] && rm -rf $I ;  ln -s -f /dev/null $I ) ; done }
-
-# calculator
-calc() { bc <<< $*; }
-
 # tail -f with color
 # example : t access.log ERROR WARNING
 function t()
@@ -181,32 +176,7 @@ function t()
 }
 
 
-function img
-{
-        for image in "$@"
-        do
-                convert -thumbnail $(tput cols) "$image" txt:- | awk -F '[)(,]' '!/^#/{gsub(/ /,""); printf"\033[48;2;"$3";"$4";"$5"m "}'
-                echo -e "\e[0;0m"
-        done
-}
-
-
-function tmvs {
-    tmux split-window -dh "$*"
-}
-
-
-function tmhs {
-    tmux split-window -dv "$*"
-}
-
 export LS_COLORS=$LS_COLORS":di=01;90"
-
-
-# LS_COLORS='di=0;35' ; export LS_COLORS
-
-# set up autojump
-[[ -s /home/alinh/bin/autojump/etc/profile.d/autojump.sh ]] && . /home/alinh/bin/autojump/etc/profile.d/autojump.sh
 
 
 function workspace ()
@@ -215,3 +185,24 @@ function workspace ()
     tmux neww "vim -S tabs"
     tmux attach -t Work
 }
+
+. .proxyrc
+                                                          
+export PATH=~/.ssh:$PATH  
+
+alias ansible2.3='/home/alinh/Work/Ansible/ansible2.3.2/bin/python /home/alinh/Work/Ansible/ansible2.3.2/bin/ansible'
+alias ansible2.3-playbook='/home/alinh/Work/Ansible/ansible2.3.2/bin/python /home/alinh/Work/Ansible/ansible2.3.2/bin/ansible-playbook'
+
+function ssh_with_rc()
+{
+        if [[ -r ~/.sshrc ]]
+        then
+                RC_DATA=$(cat ~/.sshrc | base64 -w 0)
+                \ssh -t $@ "echo \"${RC_DATA}\" | base64 -di > /tmp/${USER}_bashrc; bash --rcfile /tmp/${USER}_bashrc; rm /tmp/${USER}_bashrc"
+        else
+                echo norc >> /tmp/ssh_debug
+                \ssh $@
+        fi
+}
+
+alias ssh="ssh_with_rc"
