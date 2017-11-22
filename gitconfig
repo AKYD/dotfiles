@@ -1,6 +1,5 @@
 [diff]
 	tool = vimdiff
-	external = git_vimdiff_wrapper
 [difftool]
 	prompt = false
 
@@ -67,8 +66,8 @@
 [push]
         default = matching
 [user]
-	email = CHANGE_ME
-	name = CHANGE_ME
+	email = alin.hrapciuc@orange.com
+	name = alin.hrapciuc@orange.com
         editor = vim
 [http]
 	sslVerify = false

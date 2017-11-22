@@ -186,12 +186,13 @@ function workspace ()
     tmux attach -t Work
 }
 
-. .proxyrc
+# load proxy settings
+. proxyrc
+
+# load local settings
+. localrc
                                                           
 export PATH=~/.ssh:$PATH  
-
-alias ansible2.3='/home/alinh/Work/Ansible/ansible2.3.2/bin/python /home/alinh/Work/Ansible/ansible2.3.2/bin/ansible'
-alias ansible2.3-playbook='/home/alinh/Work/Ansible/ansible2.3.2/bin/python /home/alinh/Work/Ansible/ansible2.3.2/bin/ansible-playbook'
 
 function ssh_with_rc()
 {
