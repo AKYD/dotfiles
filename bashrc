@@ -187,10 +187,11 @@ function workspace ()
 }
 
 # load proxy settings
-. ~/dotfiles/proxyrc
+
+[[ -r ~/dotfiles/proxyrc ]] && . ~/dotfiles/proxyrc
 
 # load local settings
-. ~/dotfiles/localrc
+[[ -r ~/dotfiles/localrc ]] && . ~/dotfiles/localrc
                                                           
 export PATH=~/.ssh:$PATH  
 

@@ -16,11 +16,14 @@ if which vim > /dev/null 2>&1
 then
         export EDITOR=vim
 else
-        if [[ -f /tmp/vim ]]
+        if [[ -f /etc/redhat-release ]]
         then
-                alias vim="/tmp/vim"
+                if [[ -f /tmp/vim_rhel ]]
+                then
+                        alias vim="/tmp/vim_rhel"
+                fi
+                export EDITOR=vim
         fi
-        export EDITOR=vim
 fi
 
 # expand all ! words
