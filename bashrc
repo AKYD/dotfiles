@@ -197,10 +197,11 @@ export PATH=~/.ssh:$PATH
 
 function ssh_with_rc()
 {
-        if [[ -r ~/.sshrc ]]
+        if [[ -r ~/.r_bashrc ]]
         then
-                RC_DATA=$(cat ~/.sshrc | base64 -w 0)
-                \ssh -t $@ "echo \"${RC_DATA}\" | base64 -di > /tmp/${USER}_bashrc; bash --rcfile /tmp/${USER}_bashrc; rm /tmp/${USER}_bashrc"
+                BASHRC_DATA=$(cat ~/.r_bashrc | base64 -w 0)
+                VIMRC_DATA=$(cat ~/.r_vimrc | base64 -w 0)
+                \ssh -t $@ "echo \"${VIMRC_DATA}\" | base64 -di > /tmp/${USER}_vimrc; bash --rcfile <(echo \"${BASHRC_DATA}\" | base64 -di); rm -f /tmp/${USER}_vimrc"
         else
                 \ssh $@
         fi
