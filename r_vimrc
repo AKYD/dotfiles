@@ -1,2 +1,7 @@
 set nocompatible
 colorscheme desert
+
+syntax on
+set hlsearch
+
+set bs=indent,eol,start         " allow backspacing over everything in insert mode
