@@ -5,8 +5,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export PATH=$PATH:~/bin:~/bin/autojump/usr/local/bin
-
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
 # timestamp the commands in history
@@ -43,6 +41,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias g='history | grep'
 alias diffss='diff --side-by-side -W"`tput cols`"'
+
+alias jl='python -m json.tool'
 
 export EDITOR=/usr/bin/vim
 
@@ -118,7 +118,7 @@ parse_git_branch () {
 }                                                              
  
                      
-# show last command exit status               
+# show last command exit status
 PS1="\`res=\$?; if [ \$res -eq 0 ]; then echo \[\e[32m\]^_^ \| \[\e[0m\]; else echo \[\e[31m\]O_o : \[\e[0m\]\[\e[35m\]\$res\[\e[0m\] \[\e[32m\]\| \[\e[0m\]; fi\`"
 
 if [ $UID -eq 0 ]         
@@ -183,7 +183,7 @@ export LS_COLORS=$LS_COLORS":di=01;90"
 function workspace ()
 {
     tmux new -s Work -d
-    tmux neww "vim -S tabs"
+    tmux neww "vim -S ~/tabs"
     tmux attach -t Work
 }
 
@@ -209,4 +209,8 @@ function ssh_with_rc()
         fi
 }
 
-alias ssh="ssh_with_rc"
+human_readable_numbers () {
+        python -c "print('{:,}').format($1)"
+}
+
+#alias ssh="ssh_with_rc"
