@@ -5,8 +5,6 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-export PATH=$PATH:~/bin:~/bin/autojump/usr/local/bin
-
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
 # timestamp the commands in history
@@ -43,6 +41,8 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias g='history | grep'
 alias diffss='diff --side-by-side -W"`tput cols`"'
+
+alias jl='python -m json.tool'
 
 export EDITOR=/usr/bin/vim
 
@@ -103,16 +103,16 @@ parse_git_branch () {
         else
                 if [ "$branch" == "master" ]
                 then
-                        branch="\e[1;31m$branch\e[m"
+                        branch="\[\033[1;31m\]${branch}\[\e[m\]"
                 else
-                        branch="\e[1;33m$branch\e[m"
+                        branch="\[\033[1;33m\]${branch}\[\e[m\]"
                 fi
 
                 if [ ! -z "$dirty" ]
                 then
-                        echo -e " ( ${branch} : \e[33m*\e[m ) "  
+                        echo -e "( ${branch} : \[\e[33m*\e[m\] ) "
                 else
-                        echo -e " ( $branch ) "  
+                        echo -e "( ${branch} ) "
                 fi
         fi
 }
@@ -130,8 +130,7 @@ else
 "
 fi
 
-
-PS1="$PS1\`parse_git_branch\`"
+PS1="$PS1 $(parse_git_branch)"
 
 # colorize prompt if logged in as root
 if [ $UID -eq 0 ]
@@ -184,7 +183,7 @@ export LS_COLORS=$LS_COLORS":di=01;90"
 function workspace ()
 {
     tmux new -s Work -d
-    tmux neww "vim -S tabs"
+    tmux neww "vim -S ~/tabs"
     tmux attach -t Work
 }
 
@@ -210,4 +209,8 @@ function ssh_with_rc()
         fi
 }
 
-alias ssh="ssh_with_rc"
+human_readable_numbers () {
+        python -c "print('{:,}').format($1)"
+}
+
+#alias ssh="ssh_with_rc"
