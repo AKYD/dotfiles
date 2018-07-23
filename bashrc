@@ -97,41 +97,40 @@ parse_git_dirty () {
 parse_git_branch () {
         local branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/" )
         local dirty=$(parse_git_dirty)
-        if [ -z "$branch" ]
-        then
+        if [ -z "$branch" ]           
+        then               
                 echo ""
-        else
+        else                                                                                
                 if [ "$branch" == "master" ]
-                then
-                        branch="\e[1;31m$branch\e[m"
+                then                     
+                        branch="\001\033[1;31m\002${branch}\001\e[m\002"
                 else
-                        branch="\e[1;33m$branch\e[m"
+                        branch="\001\033[1;33m\002${branch}\001\e[m\002"                                                  
                 fi
-
+                                      
                 if [ ! -z "$dirty" ]
                 then
-                        echo -e " ( ${branch} : \e[33m*\e[m ) "  
+                        echo -e "( ${branch} : \001\e[33m\002*\001\e[m\002 ) "
                 else
-                        echo -e " ( $branch ) "  
-                fi
-        fi
-}
-
-
-# show last command exit status
+                        echo -e "( ${branch} ) "
+                fi           
+        fi                    
+}                                                              
+ 
+                     
+# show last command exit status               
 PS1="\`res=\$?; if [ \$res -eq 0 ]; then echo \[\e[32m\]^_^ \| \[\e[0m\]; else echo \[\e[31m\]O_o : \[\e[0m\]\[\e[35m\]\$res\[\e[0m\] \[\e[32m\]\| \[\e[0m\]; fi\`"
 
-if [ $UID -eq 0 ]
-then
+if [ $UID -eq 0 ]         
+then                                                                                 
         PS1="$PS1""\[\e[1;31m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]
-"
-else
+"                       
+else                                  
         PS1="$PS1""\[\e[1;32m\]${debian_chroot:+($debian_chroot)}\u\[\e[0m\]@\[\e[1;33m\]\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]
 "
-fi
-
-
-PS1="$PS1\`parse_git_branch\`"
+fi                             
+                    
+PS1="$PS1 \$(parse_git_branch)"
 
 # colorize prompt if logged in as root
 if [ $UID -eq 0 ]
