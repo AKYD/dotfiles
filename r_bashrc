@@ -1,9 +1,22 @@
 PROMPT_COMMAND='' && dlog="" && unset TMOUT
 export HISTFILE=~/.bash_history
 
+# Source global definitions
+if [ -f /etc/bashrc ]
+then
+        . /etc/bashrc
+fi
+
+if [ -f ~/.bashrc ]
+then
+        . ~/.bashrc
+fi
+
+
 # make less keep the text on screen after exit
 export LESS='FiXR'
 
+# aliases for sanity
 alias ls='ls --color'
 alias l='ls -liAh'
 alias ll='ls -liAh'
@@ -12,6 +25,7 @@ alias r='fc -s'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias diffss='diff --side-by-side -W"`tput cols`"'
+alias jl='python -m json.tool'
 
 # aliases for Nagios
 alias c='cd /opt/nagios/libexec/custom_scripts'
@@ -21,6 +35,7 @@ alias t='cd /opt/nagios/share/pnp4nagios/share/templates.dist'
 alias p='cd /opt/nagios/share/pnp4nagios/var/perfdata'
 alias V='/opt/nagios/bin/nagios -v /opt/nagios/etc/nagios.cfg'
 alias R='service nagios reload'
+
 
 vimrc_file=$(ls -1tr /tmp/*_vimrc 2> /dev/null | tail -1)
 alias=0
@@ -39,14 +54,21 @@ else
                                 alias vim="/tmp/vim_rhel"
                         fi
                         alias=1
+                else
+                        alias=0
                 fi
                 export EDITOR=vim
+        else
+                alias=1
+                alias vim='vi'
         fi
 fi
 
-if [[ $alias -eq 0 ]] && [[ "$vimrc_file" ]]
+if [[ $alias -eq 0 ]] && [[ "$vimrc_file" ]] && which vim > /dev/null 2>&1
 then
         alias vim="vim -u $vimrc_file"
+else
+        alias vim="vi"
 fi
 
 # expand all ! words

@@ -203,7 +203,7 @@ function ssh_with_rc()
                 BASHRC_DATA=$(cat ~/.r_bashrc | base64 -w 0)
                 VIMRC_DATA=$(cat ~/.r_vimrc | base64 -w 0)
                 #\ssh -t $@ "echo \"${VIMRC_DATA}\" | base64 -di > /tmp/${USER}_vimrc; bash --rcfile <(echo \"${BASHRC_DATA}\" | base64 -di); rm -f /tmp/${USER}_vimrc"
-                \ssh -t $@ "echo \"${VIMRC_DATA}\" | base64 -di > /tmp/${USER}_vimrc; echo \"${BASHRC_DATA}\" | base64 -di > /tmp/${USER}_bashrc; bash --rcfile /tmp/${USER}_bashrc; rm -f /tmp/${USER}_vimrc /tmp/${USER}_bashrc"
+                \ssh -t $@ "echo \"${VIMRC_DATA}\" | base64 -di > /tmp/${USER}_vimrc; echo \"${BASHRC_DATA}\" | base64 -di > /tmp/${USER}_bashrc; bash --rcfile /tmp/${USER}_bashrc; rm -f /tmp/${USER}_bashrc"
         else
                 \ssh $@
         fi
